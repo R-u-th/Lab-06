@@ -28,8 +28,19 @@ diamonds <- diamonds %>% rename(
 
 ```{r}
 # Do some preliminary investigations & cleaning
+diamonds %>%
+  count(cut) %>%
+  arrange(desc(n))
 
+diamonds <- diamonds %>%
+  filter(!(length_mm == 0 | width_mm == 0 | depth_mm == 0))
 
+ggplot(data = diamonds, aes(x = price)) +
+  geom_histogram(bins = 60)
+
+ggplot(data = diamonds, aes(x = length_mm,
+                            y = width_mm)) +
+  geom_line()
 
 
 ```
@@ -44,21 +55,21 @@ diamonds <- diamonds %>%
 
 # Overall table_mm arithmetic mean?
 
-
-
+diamonds %>%
+  summarise(arithmetic_mean = mean(table_mm))
 
 
 
 # table_mm arithmetic mean within each clarity category
 
-
-
-
+diamonds %>%
+  group_by(clarity) %>%
+  summarise(arithmetic_mean = mean(table_mm))
 
 
 ```
 
-_Add your comment here_
+_As the clarity gets better the arithmetic mean of table length gets smaller._
 
 ```{r}
 # calculate the arithmetic mean across all numeric variables
